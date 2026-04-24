@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>2025 F1 Győztesek</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 60px auto;
+      background: #1a1a2e;
+      color: #eee;
+      text-align: center;
+    }
+    h1 { color: #e94560; }
+    select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+      margin-top: 20px;
+      background: #16213e;
+      color: #eee;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 30px;
+      font-size: 20px;
+      min-height: 30px;
+    }
+    #result span {
+      color: #e94560;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏎️ 2025 F1 Futamok</h1>
+
+  <select id="raceSelect" onchange="showWinner()">
+    <option value="">-- Válassz futamot --</option>
+  </select>
+
+  <div id="result"></div>
+
+  <script>
+    const BACKEND = 'http://k8sbeadasos-backend-reinhardtbenjamin.jcloud.jedlik.cloud';
+
+    async function loadRaces() {
+      const res = await fetch(`${BACKEND}/races`);
+      const races = await res.json();
+      const select = document.getElementById('raceSelect');
+      races.forEach(r => {
+        const opt = document.createElement('option');
+        opt.value = r.id;
+        opt.textContent = r.race;
+        select.appendChild(opt);
+      });
+    }
+
+    async function showWinner() {
+      const id = document.getElementById('raceSelect').value;
+      const result = document.getElementById('result');
+      if (!id) { result.innerHTML = ''; return; }
+
+      const res = await fetch(`${BACKEND}/winner?id=${id}`);
+      const data = await res.json();
+      result.innerHTML = `Győztes: <span>${data.winner}</span>`;
+    }
+
+    loadRaces();
+  </script>
+</body>
+</html>

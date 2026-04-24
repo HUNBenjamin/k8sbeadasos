@@ -1,0 +1,106 @@
+# kubectl create secret docker-registry ghcr-auth-secret --docker-server=ghcr.io --docker-username=hunbenjamin --docker-password=$GHCR_TOKEN
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8sbeadasos-backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod: k8sbeadasos-backend
+  template:
+    metadata:
+      labels:
+        pod: k8sbeadasos-backend
+    spec:
+      containers:
+        - name: k8sbeadasos-backend-container
+          image: ghcr.io/hunbenjamin/k8sbeadasos-backend:latest
+          ports:
+            - containerPort: 3000
+      imagePullSecrets:
+        - name: ghcr-auth-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8sbeadasos-backend-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    pod: k8sbeadasos-backend
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: k8sbeadasos-backend-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: k8sbeadasos-backend-reinhardtbenjamin.jcloud.jedlik.cloud
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: k8sbeadasos-backend-clusterip
+                port:
+                  number: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8sbeadasos-frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod: k8sbeadasos-frontend
+  template:
+    metadata:
+      labels:
+        pod: k8sbeadasos-frontend
+    spec:
+      containers:
+        - name: k8sbeadasos-frontend-container
+          image: ghcr.io/hunbenjamin/k8sbeadasos-frontend:latest
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: ghcr-auth-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8sbeadasos-frontend-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    pod: k8sbeadasos-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: k8sbeadasos-frontend-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: k8sbeadasos-reinhardtbenjamin.jcloud.jedlik.cloud
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: k8sbeadasos-frontend-clusterip
+                port:
+                  number: 80
