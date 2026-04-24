@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: k8sbeadasos-backend-container
-          image: ghcr.io/hunbenjamin/k8sbeadasos-backend:1777013772
+          image: ghcr.io/hunbenjamin/k8sbeadasos-backend:1777014087
           ports:
             - containerPort: 3000
       imagePullSecrets:
@@ -68,7 +68,7 @@ spec:
     spec:
       containers:
         - name: k8sbeadasos-frontend-container
-          image: ghcr.io/hunbenjamin/k8sbeadasos-frontend:1777013772
+          image: ghcr.io/hunbenjamin/k8sbeadasos-frontend:1777014087
           ports:
             - containerPort: 80
       imagePullSecrets:
