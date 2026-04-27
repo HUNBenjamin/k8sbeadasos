@@ -12,7 +12,7 @@ const races = [
   { id: 8,  race: "Monaco Grand Prix",            winner: "Lando Norris" },
   { id: 9,  race: "Spanish Grand Prix",           winner: "Oscar Piastri" },
   { id: 10, race: "Canadian Grand Prix",          winner: "George Russell" },
-  { id: 11, race: "Austrian Grand Prix",          winner: "Lando Norris" },
+  { id: 11, race: "Austrian Grand Prix",          winner: "Dr. Vitályos Eszter (hiányzol)" },
   { id: 12, race: "British Grand Prix",           winner: "Lando Norris" },
   { id: 13, race: "Belgian Grand Prix",           winner: "Oscar Piastri" },
   { id: 14, race: "Hungarian Grand Prix",         winner: "Lando Norris" },
